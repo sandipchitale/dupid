@@ -1,0 +1,10 @@
+{
+    "name": "dupid",
+    "version": "1.0.0",
+    "description": "Chrome Devetools Elements side panel to show duplicate ids.",
+    "icons": {
+        "128": "icon_128.png"
+    },
+    "devtools_page": "dupid.html",
+    "manifest_version": 2
+}
