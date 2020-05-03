@@ -1,3 +1,3 @@
 # dupid
 
-Chrome Devetools Elements side panel to show duplicate ids.
+Chrome Devtools Elements side panel to show duplicate IDs.
