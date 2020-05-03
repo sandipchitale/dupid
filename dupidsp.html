@@ -84,14 +84,13 @@
             height: 98vh;
             column-gap: 20px;
             row-gap: 0px;
-            grid-template-columns: 1fr;
-            grid-template-rows: auto auto minMax(3rem, 5rem) auto 1fr;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto 1fr;
             grid-template-areas:
-                "toolbar"
-                "duplicate-ids-header"
-                "duplicate-ids"
-                "all-ids-header"
-                "all-ids";
+                "toolbar              toolbar"
+                "duplicate-ids-header all-ids-header"
+                "duplicate-ids        all-ids"
+                ;
         }
 
         .grid-toolbar {
@@ -138,11 +137,11 @@
             <button id="find-duplicate-ids" title="Find duplicate IDs">&#128269;</button>
             <button id="clear" title="clear">&#9003</button>
         </div>
-        <h3  class="grid-duplicate-ids-header">Duplicate IDs</h3>
+        <h3  class="grid-duplicate-ids-header">( occurence ) Duplicate IDs</h3>
         <div class="grid-duplicate-ids">
             <pre id="duplicate-ids"></pre>
         </div>
-        <h3  class="grid-all-ids-header">All IDs (duplicate count)</h3>
+        <h3  class="grid-all-ids-header">( occurence ) All IDs (duplicate count)</h3>
         <div class="grid-all-ids">
             <pre id="all-ids"></pre>
         </div>

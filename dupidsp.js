@@ -23,13 +23,19 @@
                 const idCounts = sortedIdsArray.reduce((map, val) => {map[val] = (map[val] || 0)+1; return map}, {} );
 
                 sortedIdsArray.forEach(id => {
-                    let code = document.createElement('code');
-                    code.innerHTML = `<a class="inspect" title="${id}">&#128269;</a> ${id}${1 === idCounts[id] ? '' : ' ( ' + idCounts[id] + ' )' }\n`;
-                    allIdsPre.appendChild(code);
-                    if (idCounts[id] && idCounts[id] > 1) {
-                        code = document.createElement('code');
-                        code.innerHTML = `<a class="inspect" title="${id}">&#128269;</a> ${id}\n`;
-                        duplicateIdsPre.appendChild(code);
+                    const count = idCounts[id];
+                    for (let i = 0; i < count; i++) {
+                        let code = document.createElement('code');
+                        code.innerHTML = `( ${ordinal_suffix_of(i)} ) <a class="inspect" id-id="${id}" id-ordinal="${i}" title="${id}">&#128269;</a> ${id}${!idCounts[id] ? '' : ' ( ' + idCounts[id] + ' )' }\n`;
+                        allIdsPre.appendChild(code);
+                    }
+                    if (count && count > 1) {
+                        const count = idCounts[id];
+                        for (let i = 0; i < count; i++) {
+                            code = document.createElement('code');
+                            code.innerHTML = `( ${ordinal_suffix_of(i)} ) <a class="inspect" id-id="${id}" id-ordinal="${i}" title="${id}">&#128269;</a> ${id} ( ${count} )\n`;
+                            duplicateIdsPre.appendChild(code);
+                        }
                     }
                 });
 
@@ -37,7 +43,7 @@
                 // Convert buttons NodeList to an array
                 let inspectAnchorArray = Array.prototype.slice.call(inspectAnchors);
                 inspectAnchorArray.forEach((inspectAnchor) => {
-                    inspectAnchor.onclick = inspect.bind(inspectAnchor, inspectAnchor.getAttribute('title'));
+                    inspectAnchor.onclick = inspect.bind(inspectAnchor, inspectAnchor.getAttribute('id-id'), inspectAnchor.getAttribute('id-ordinal'));
                 });
             }
         });
@@ -52,8 +58,8 @@
 
     clearButton.onclick = clear;
 
-    function inspect(target) {
-        const inspectExpression = `inspect(document.querySelector('#${target}'))`;
+    function inspect(id, ordinal) {
+        const inspectExpression = `inspect(document.querySelectorAll('#${id}').item(${ordinal}))`;
         chrome.devtools.inspectedWindow.eval(inspectExpression, {}, (returnedValue, returnStatus) => {
         });
     }
@@ -73,6 +79,21 @@
         document.execCommand('copy');
         // Remove temporary element
         document.body.removeChild(el);
+    }
+
+    function ordinal_suffix_of(i) {
+        var j = i % 10,
+            k = i % 100;
+        if (j == 1 && k != 11) {
+            return (i + 'st').padStart(6);
+        }
+        if (j == 2 && k != 12) {
+            return (i + 'nd').padStart(6);
+        }
+        if (j == 3 && k != 13) {
+            return (i + 'rd').padStart(6);
+        }
+        return (i + 'th').padStart(6);
     }
 
     chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
