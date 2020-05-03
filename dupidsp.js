@@ -22,6 +22,8 @@
             if (sortedIdsArray && sortedIdsArray.length) {
                 const idCounts = sortedIdsArray.reduce((map, val) => {map[val] = (map[val] || 0)+1; return map}, {} );
 
+                sortedIdsArray = Array.from(new Set(sortedIdsArray));
+
                 sortedIdsArray.forEach(id => {
                     const count = idCounts[id];
                     for (let i = 0; i < count; i++) {
