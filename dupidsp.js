@@ -46,6 +46,8 @@
                 let inspectAnchorArray = Array.prototype.slice.call(inspectAnchors);
                 inspectAnchorArray.forEach((inspectAnchor) => {
                     inspectAnchor.onclick = inspect.bind(inspectAnchor, inspectAnchor.getAttribute('id-id'), inspectAnchor.getAttribute('id-ordinal'));
+                    inspectAnchor.onmouseenter = highlight.bind(inspectAnchor, inspectAnchor.getAttribute('id-id'), inspectAnchor.getAttribute('id-ordinal'));
+                    inspectAnchor.onmouseleave = unhighlight.bind(inspectAnchor, inspectAnchor.getAttribute('id-id'), inspectAnchor.getAttribute('id-ordinal'));
                 });
             }
         });
@@ -59,6 +61,18 @@
     }
 
     clearButton.onclick = clear;
+
+    function highlight(id, ordinal) {
+        const inspectExpression = `document.querySelectorAll('#${id}').item(${ordinal}).style.boxShadow = '0 0 20px red';`;
+        chrome.devtools.inspectedWindow.eval(inspectExpression, {}, (returnedValue, returnStatus) => {
+        });
+    }
+
+    function unhighlight(id, ordinal) {
+        const inspectExpression = `document.querySelectorAll('#${id}').item(${ordinal}).style.boxShadow = 'inherit';`;
+        chrome.devtools.inspectedWindow.eval(inspectExpression, {}, (returnedValue, returnStatus) => {
+        });
+    }
 
     function inspect(id, ordinal) {
         const inspectExpression = `inspect(document.querySelectorAll('#${id}').item(${ordinal}))`;
