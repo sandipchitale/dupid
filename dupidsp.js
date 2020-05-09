@@ -28,11 +28,13 @@
                     const count = idCounts[id];
                     for (let i = 0; i < count; i++) {
                         let code = document.createElement('code');
-                        code.innerHTML = `( ${ordinal_suffix_of(i)} ) <a class="inspect" id-id="${id}" id-ordinal="${i}" title="${id}">&#128269;</a> ${id}${!idCounts[id] ? '' : ' ( ' + idCounts[id] + ' )' }\n`;
+                        code.innerHTML = `( ${ordinal_suffix_of(i)} )`
+                            + `<a class="inspect" id-id="${id}" id-ordinal="${i}" title="${id}">&#128269;</a>`
+                            + `${id}${((!count) || (count === 1) || (i !== 0)) ? '' : ' ( ' + count + ' )' }\n`;
                         allIdsPre.appendChild(code);
                     }
                     if (count && count > 1) {
-                        const count = idCounts[id];
+                        // const count = idCounts[id];
                         for (let i = 0; i < count; i++) {
                             code = document.createElement('code');
                             code.innerHTML = `( ${ordinal_suffix_of(i)} ) <a class="inspect" id-id="${id}" id-ordinal="${i}" title="${id}">&#128269;</a> ${id} ( ${count} )\n`;
@@ -98,6 +100,7 @@
     }
 
     function ordinal_suffix_of(i) {
+        i++;
         var j = i % 10,
             k = i % 100;
         if (j == 1 && k != 11) {
